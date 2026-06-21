@@ -1711,6 +1711,137 @@
       margin-left: 8px;
     }
 
+
+
+    /* Fix all remaining light panels/pages to the same blue theme */
+    .subject-cta-panel,
+    .appointment-form,
+    .exam-form,
+    .insight-card,
+    .modal-form-card,
+    .subject-manage-list,
+    .mini-list .mini-item,
+    .day,
+    .calendar-nav button,
+    .btn-ghost,
+    .btn-white,
+    .side-action,
+    .icon-btn {
+      background: linear-gradient(180deg, rgba(8, 28, 48, 0.88), rgba(3, 18, 32, 0.72)) !important;
+      border-color: rgba(125, 211, 252, 0.28) !important;
+      color: var(--text) !important;
+    }
+
+    .subject-cta-panel,
+    .appointment-form,
+    .exam-form,
+    .insight-card {
+      box-shadow: 0 18px 42px rgba(0, 9, 20, 0.28);
+    }
+
+    .subject-cta-panel::before,
+    .appointment-form::before,
+    .exam-form::before,
+    .insight-card::before {
+      pointer-events: none;
+    }
+
+    .modal {
+      background: rgba(1, 9, 18, 0.76);
+    }
+
+    .modal-card {
+      background:
+        radial-gradient(circle at 12% 8%, rgba(14, 165, 233, 0.18), transparent 32%),
+        linear-gradient(180deg, rgba(10, 35, 60, 0.96), rgba(4, 20, 35, 0.94)) !important;
+    }
+
+    .appointment-form input,
+    .appointment-form select,
+    .appointment-form textarea,
+    .exam-form input,
+    .exam-form select,
+    .subject-add input,
+    .modal-card input,
+    .modal-card select,
+    .modal-card textarea,
+    option {
+      background: rgba(2, 17, 32, 0.82) !important;
+      color: var(--text) !important;
+      border-color: rgba(125, 211, 252, 0.30) !important;
+    }
+
+    .appointment-form-head,
+    .modal-head {
+      border-color: rgba(125, 211, 252, 0.28) !important;
+    }
+
+    .appointment-form-head strong,
+    .appointment-field > span,
+    .panel-title h2,
+    .calendar-head h2,
+    .subject-cta-title h2,
+    .modal-head h2,
+    h2 {
+      color: var(--text) !important;
+    }
+
+    .subject-helper,
+    .appointment-form-head span,
+    .appointment-detail p,
+    .exam-detail p,
+    .note,
+    .mini-item,
+    .day,
+    .footer-note {
+      color: var(--muted) !important;
+    }
+
+    .day.has-task,
+    .day.has-exam,
+    .day.has-appointment {
+      background: rgba(14, 165, 233, 0.16) !important;
+      color: #e0f2fe !important;
+      border-color: rgba(125, 211, 252, 0.38) !important;
+    }
+
+    .empty,
+    .appointment-empty,
+    .exam-empty {
+      background: rgba(2, 17, 32, 0.58) !important;
+      color: var(--muted) !important;
+      border-color: rgba(125, 211, 252, 0.28) !important;
+    }
+
+    .toast {
+      background: #e0f2fe;
+      color: #061826;
+      border-color: rgba(125, 211, 252, 0.55);
+    }
+
+    .subject-add {
+      align-items: stretch;
+    }
+
+    .subject-add button {
+      min-height: 46px;
+    }
+
+    .subject-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .subject-pill .remove-subject {
+      display: inline-grid;
+      place-items: center;
+      width: 20px;
+      height: 20px;
+      border-radius: 999px;
+      background: rgba(251, 113, 133, 0.16);
+    }
+
   </style>
 </head>
 
@@ -2212,8 +2343,9 @@
         addSubject.value = value;
       }
 
-      closeSubjectModal();
-      toast("เพิ่มวิชาเรียบร้อย");
+      renderSidebarSubjects();
+      input.focus();
+      toast("เพิ่มวิชาเรียบร้อย เพิ่มต่อได้เลย");
     }
 
     function removeSubject(subject) {
