@@ -3171,23 +3171,27 @@
     }
 
 
+    // BLUE_EXPORT_V3: สีของภาพ Export PNG ให้ตรงกับธีมฟ้าหลัก + เพิ่มคอนทราสต์ตัวเลข
     const EXPORT_PALETTE = {
-      paper: "#fff8ed",
-      paper2: "#fbf1e0",
-      ink: "#2b2014",
-      muted: "#8a7458",
-      line: "rgba(120,72,30,0.18)",
-      primary: "#e1590c",
-      primaryDark: "#b6430a",
-      secondary: "#f2a93b",
-      success: "#1f8a6e",
-      danger: "#c8102e",
-      shadow: "rgba(70,40,10,0.14)"
+      paper: "#061826",
+      paper2: "#0f2a44",
+      card: "rgba(8, 28, 48, 0.92)",
+      card2: "rgba(3, 18, 32, 0.78)",
+      ink: "#f0f9ff",
+      muted: "#a8c7dc",
+      line: "rgba(125, 211, 252, 0.28)",
+      primary: "#0ea5e9",
+      primaryDark: "#38bdf8",
+      secondary: "#7dd3fc",
+      success: "#2dd4bf",
+      danger: "#fb7185",
+      number: "#e0f2fe",
+      shadow: "rgba(0, 9, 20, 0.34)"
     };
 
     function drawPaperTexture(ctx, width, height) {
       ctx.save();
-      ctx.strokeStyle = "rgba(120,72,30,0.045)";
+      ctx.strokeStyle = "rgba(125, 211, 252, 0.055)";
       ctx.lineWidth = 1;
       for (let y = 76; y < height - 76; y += 28) {
         ctx.beginPath();
@@ -3196,7 +3200,7 @@
         ctx.stroke();
       }
 
-      ctx.fillStyle = "rgba(225,89,12,0.035)";
+      ctx.fillStyle = "rgba(125, 211, 252, 0.045)";
       for (let i = 0; i < 120; i++) {
         const x = (i * 97) % width;
         const y = (i * 53) % height;
@@ -3209,7 +3213,8 @@
 
     function drawExportBrandMark(ctx, x, y, size) {
       const grad = ctx.createLinearGradient(x, y, x + size, y + size);
-      grad.addColorStop(0, EXPORT_PALETTE.primary);
+      grad.addColorStop(0, EXPORT_PALETTE.primaryDark);
+      grad.addColorStop(0.55, EXPORT_PALETTE.primary);
       grad.addColorStop(1, EXPORT_PALETTE.secondary);
       ctx.fillStyle = grad;
       roundRect(ctx, x, y, size, size, Math.round(size * 0.28), true, false);
@@ -3222,12 +3227,12 @@
       ctx.fillStyle = "#ffffff";
       ctx.font = `900 ${Math.round(size * 0.42)}px 'Noto Sans Thai', Arial, sans-serif`;
       ctx.textAlign = "center";
-      ctx.fillText("🔥", x + size / 2, y + size * 0.66);
+      ctx.fillText("📚", x + size / 2, y + size * 0.66);
       ctx.textAlign = "left";
     }
 
     function drawExportFooter(ctx, width, height, text) {
-      ctx.fillStyle = "rgba(120,72,30,0.12)";
+      ctx.fillStyle = "rgba(125, 211, 252, 0.18)";
       roundRect(ctx, 90, height - 116, width - 180, 1.5, 1, true, false);
       ctx.fillStyle = EXPORT_PALETTE.muted;
       ctx.font = "800 18px 'Noto Sans Thai', Arial, sans-serif";
@@ -3284,10 +3289,10 @@
       drawExamPNGBackground(ctx, width, height);
       drawExamPNGHeader(ctx, width);
       drawExamSummary(ctx, midterms, finals);
-      drawExamSection(ctx, 90, 475, 575, "Midterm", "#6366f1", midterms);
-      drawExamSection(ctx, 735, 475, 575, "Final", "#ec4899", finals);
+      drawExamSection(ctx, 90, 475, 575, "Midterm", EXPORT_PALETTE.primary, midterms);
+      drawExamSection(ctx, 735, 475, 575, "Final", EXPORT_PALETTE.secondary, finals);
 
-      drawExportFooter(ctx, width, height, "ข้อมูล Export จากตารางสอบในเครื่องของคุณ");
+      drawExportFooter(ctx, width, height, "ข้อมูล Export จากตารางสอบของคุณ");
 
       const link = document.createElement("a");
       link.download = `test${getExportTimestampName()}.png`;
@@ -3299,18 +3304,21 @@
 
     function drawExamPNGBackground(ctx, width, height) {
       const bg = ctx.createLinearGradient(0, 0, width, height);
-      bg.addColorStop(0, "#fbf1e0");
-      bg.addColorStop(0.55, "#fff8ed");
-      bg.addColorStop(1, "#f7e9ce");
+      bg.addColorStop(0, "#061826");
+      bg.addColorStop(0.55, "#0f2a44");
+      bg.addColorStop(1, "#031220");
       ctx.fillStyle = bg;
       ctx.fillRect(0, 0, width, height);
 
       drawPaperTexture(ctx, width, height);
-      drawBlob(ctx, 120, 125, 280, "rgba(225,89,12,0.16)");
-      drawBlob(ctx, width - 120, 160, 330, "rgba(242,169,59,0.18)");
-      drawBlob(ctx, 315, height - 120, 280, "rgba(31,138,110,0.10)");
+      drawBlob(ctx, 120, 125, 280, "rgba(14,165,233,0.32)");
+      drawBlob(ctx, width - 120, 160, 330, "rgba(125,211,252,0.22)");
+      drawBlob(ctx, 315, height - 120, 280, "rgba(45,212,191,0.14)");
 
-      ctx.fillStyle = "rgba(255,251,242,0.90)";
+      const cardBg = ctx.createLinearGradient(46, 42, width - 46, height - 42);
+      cardBg.addColorStop(0, "rgba(10, 35, 60, 0.94)");
+      cardBg.addColorStop(1, "rgba(3, 18, 32, 0.90)");
+      ctx.fillStyle = cardBg;
       roundRect(ctx, 46, 42, width - 92, height - 84, 42, true, false);
 
       ctx.strokeStyle = EXPORT_PALETTE.line;
@@ -3363,9 +3371,9 @@
 
       drawMetric(ctx, 90, 285, 286, 130, "สอบทั้งหมด", total, EXPORT_PALETTE.primary);
       drawMetric(ctx, 398, 285, 286, 130, "Midterm", midterms.length, EXPORT_PALETTE.secondary);
-      drawMetric(ctx, 706, 285, 286, 130, "Final", finals.length, EXPORT_PALETTE.danger);
+      drawMetric(ctx, 706, 285, 286, 130, "Final", finals.length, EXPORT_PALETTE.secondary);
 
-      ctx.fillStyle = "rgba(255,255,255,0.82)";
+      ctx.fillStyle = "rgba(8, 28, 48, 0.86)";
       roundRect(ctx, 1014, 285, 296, 130, 28, true, false);
       ctx.strokeStyle = EXPORT_PALETTE.line;
       ctx.lineWidth = 2;
@@ -3381,7 +3389,7 @@
         drawClampedText(ctx, nearest.subject, 1038, 358, 248);
         const days = getDaysLeft(nearest.date);
         const detail = days === 0 ? "วันนี้" : days > 0 ? `อีก ${days} วัน` : "ผ่านแล้ว";
-        ctx.fillStyle = nearest.type === "midterm" ? EXPORT_PALETTE.secondary : EXPORT_PALETTE.danger;
+        ctx.fillStyle = nearest.type === "midterm" ? EXPORT_PALETTE.primary : EXPORT_PALETTE.secondary;
         drawClampedText(ctx, `${nearest.type === "midterm" ? "Midterm" : "Final"}`, 1038, 386, 90);
         ctx.fillStyle = EXPORT_PALETTE.muted;
         ctx.font = "700 16px 'Noto Sans Thai', Arial, sans-serif";
@@ -3392,10 +3400,10 @@
     }
 
     function drawExamSection(ctx, x, y, w, title, accent, items) {
-      const warmAccent = title === "Midterm" ? EXPORT_PALETTE.primary : EXPORT_PALETTE.danger;
+      const warmAccent = title === "Midterm" ? EXPORT_PALETTE.primary : EXPORT_PALETTE.secondary;
       const rowAreaHeight = Math.max(items.length, 1) * 96 + 116;
 
-      ctx.fillStyle = "rgba(255,251,242,0.72)";
+      ctx.fillStyle = "rgba(8, 28, 48, 0.78)";
       roundRect(ctx, x - 10, y - 14, w + 20, rowAreaHeight, 30, true, false);
 
       ctx.strokeStyle = EXPORT_PALETTE.line;
@@ -3424,7 +3432,7 @@
 
       const startY = y + 92;
       if (!items.length) {
-        ctx.fillStyle = "rgba(255,255,255,0.78)";
+        ctx.fillStyle = "rgba(8, 28, 48, 0.82)";
         roundRect(ctx, x, startY, w, 118, 24, true, false);
         ctx.strokeStyle = EXPORT_PALETTE.line;
         roundRect(ctx, x, startY, w, 118, 24, false, true);
@@ -3441,7 +3449,7 @@
     }
 
     function drawExamRow(ctx, exam, x, y, w, accent, index) {
-      ctx.fillStyle = "rgba(255,255,255,0.86)";
+      ctx.fillStyle = "rgba(8, 28, 48, 0.86)";
       roundRect(ctx, x, y, w, 84, 22, true, false);
       ctx.strokeStyle = EXPORT_PALETTE.line;
       ctx.lineWidth = 2;
@@ -3613,35 +3621,38 @@
       }
 
       if (sortedTasks.length > cardLimit) {
-        ctx.fillStyle = "#64748b";
+        ctx.fillStyle = "#a8c7dc";
         ctx.font = "700 23px 'Noto Sans Thai', Arial, sans-serif";
         ctx.fillText(`ยังมีงานเพิ่มเติมอีก ${sortedTasks.length - cardLimit} รายการในระบบ`, 90, 705 + cardLimit * taskRowHeight + 26);
       }
 
-      drawExportFooter(ctx, width, height, "ข้อมูล Export จากตารางสอบในเครื่องของคุณ");
+      drawExportFooter(ctx, width, height, "ข้อมูล Export จากตารางงานในเครื่องของคุณ");
 
       const link = document.createElement("a");
       link.download = `task${getExportTimestampName()}.png`;
       link.href = canvas.toDataURL("image/png");
       link.click();
 
-      toast("Export PNG เรียบร้อย");
+      toast("Export งานเป็น PNG เรียบร้อย");
     }
 
     function drawPNGBackground(ctx, width, height) {
       const bg = ctx.createLinearGradient(0, 0, width, height);
-      bg.addColorStop(0, "#fbf1e0");
-      bg.addColorStop(0.55, "#fff8ed");
-      bg.addColorStop(1, "#f7e9ce");
+      bg.addColorStop(0, "#061826");
+      bg.addColorStop(0.55, "#0f2a44");
+      bg.addColorStop(1, "#031220");
       ctx.fillStyle = bg;
       ctx.fillRect(0, 0, width, height);
 
       drawPaperTexture(ctx, width, height);
-      drawBlob(ctx, 120, 120, 270, "rgba(225,89,12,0.18)");
-      drawBlob(ctx, width - 100, 180, 330, "rgba(242,169,59,0.20)");
-      drawBlob(ctx, 260, height - 100, 300, "rgba(31,138,110,0.10)");
+      drawBlob(ctx, 120, 120, 270, "rgba(14,165,233,0.34)");
+      drawBlob(ctx, width - 100, 180, 330, "rgba(125,211,252,0.24)");
+      drawBlob(ctx, 260, height - 100, 300, "rgba(45,212,191,0.14)");
 
-      ctx.fillStyle = "rgba(255,251,242,0.90)";
+      const cardBg = ctx.createLinearGradient(46, 42, width - 46, height - 42);
+      cardBg.addColorStop(0, "rgba(10, 35, 60, 0.94)");
+      cardBg.addColorStop(1, "rgba(3, 18, 32, 0.90)");
+      ctx.fillStyle = cardBg;
       roundRect(ctx, 46, 42, width - 92, height - 84, 42, true, false);
 
       ctx.strokeStyle = EXPORT_PALETTE.line;
@@ -3708,7 +3719,7 @@
       const progressBoxY = 486;
       const progressBoxH = 74;
 
-      ctx.fillStyle = "rgba(255,255,255,0.86)";
+      ctx.fillStyle = "rgba(8, 28, 48, 0.86)";
       roundRect(ctx, 90, progressBoxY, 1220, progressBoxH, 26, true, false);
 
       ctx.strokeStyle = EXPORT_PALETTE.line;
@@ -3727,7 +3738,7 @@
       ctx.fillText("%", 131, progressBoxY + 46);
       ctx.textAlign = "left";
 
-      ctx.fillStyle = EXPORT_PALETTE.primaryDark;
+      ctx.fillStyle = EXPORT_PALETTE.number;
       ctx.font = "900 24px 'Noto Sans Thai', Arial, sans-serif";
       ctx.fillText(`${data.percent}%`, 170, progressBoxY + 45);
 
@@ -3742,20 +3753,26 @@
       ctx.lineTo(700, progressBoxY + 56);
       ctx.stroke();
 
-      ctx.fillStyle = "rgba(225,89,12,0.10)";
+      ctx.fillStyle = "rgba(14,165,233,0.22)";
       roundRect(ctx, 730, progressBoxY + 18, 42, 42, 14, true, false);
+
+      ctx.fillStyle = EXPORT_PALETTE.number;
+      ctx.font = "900 20px 'Noto Sans Thai', Arial, sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText("📅", 751, progressBoxY + 47);
+      ctx.textAlign = "left";
 
       ctx.fillStyle = EXPORT_PALETTE.ink;
       ctx.font = "900 22px 'Noto Sans Thai', Arial, sans-serif";
       ctx.fillText("งานที่ต้องส่งวันนี้", 790, progressBoxY + 45);
 
-      ctx.fillStyle = EXPORT_PALETTE.primaryDark;
+      ctx.fillStyle = EXPORT_PALETTE.number;
       ctx.font = "900 24px 'Noto Sans Thai', Arial, sans-serif";
       ctx.textAlign = "right";
       ctx.fillText(`${data.today} งาน`, 1274, progressBoxY + 45);
       ctx.textAlign = "left";
 
-      ctx.fillStyle = "rgba(120,72,30,0.14)";
+      ctx.fillStyle = "rgba(125, 211, 252, 0.16)";
       roundRect(ctx, 90, 582, 1220, 28, 14, true, false);
 
       const progressWidth = Math.max(0, 1220 * data.percent / 100);
@@ -3770,7 +3787,7 @@
     }
 
     function drawMetric(ctx, x, y, w, h, label, value, color) {
-      ctx.fillStyle = "rgba(255,255,255,0.86)";
+      ctx.fillStyle = "rgba(8, 28, 48, 0.86)";
       roundRect(ctx, x, y, w, h, 28, true, false);
 
       ctx.strokeStyle = EXPORT_PALETTE.line;
@@ -3816,7 +3833,7 @@
     }
 
     function drawEmptyPNGCard(ctx, x, y, w) {
-      ctx.fillStyle = "rgba(255,255,255,0.86)";
+      ctx.fillStyle = "rgba(8, 28, 48, 0.86)";
       roundRect(ctx, x, y, w, 130, 28, true, false);
 
       ctx.strokeStyle = EXPORT_PALETTE.line;
@@ -3829,7 +3846,7 @@
     }
 
     function drawPNGTaskCard(ctx, task, x, y, w, h, index) {
-      ctx.fillStyle = "rgba(255,255,255,0.88)";
+      ctx.fillStyle = "rgba(8, 28, 48, 0.88)";
       roundRect(ctx, x, y, w, h, 26, true, false);
 
       ctx.strokeStyle = EXPORT_PALETTE.line;
@@ -3843,10 +3860,10 @@
       ctx.fillStyle = edge;
       roundRect(ctx, x, y, 12, h, { tl: 26, tr: 0, br: 0, bl: 26 }, true, false);
 
-      ctx.fillStyle = task.done ? EXPORT_PALETTE.success : "rgba(120,72,30,0.18)";
+      ctx.fillStyle = task.done ? EXPORT_PALETTE.success : "rgba(125, 211, 252, 0.18)";
       roundRect(ctx, x + 34, y + 27, 34, 34, 12, true, false);
 
-      ctx.fillStyle = task.done ? "#ffffff" : EXPORT_PALETTE.primaryDark;
+      ctx.fillStyle = task.done ? "#ffffff" : EXPORT_PALETTE.number;
       ctx.font = "900 20px 'Noto Sans Thai', Arial, sans-serif";
       ctx.textAlign = "center";
       ctx.fillText(task.done ? "✓" : String(index), x + 51, y + 51);
